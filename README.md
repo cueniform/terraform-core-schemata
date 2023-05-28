@@ -45,18 +45,14 @@ but is outside the scope of this repo.
            https://github.com/cueniform/terraform-core-schema \
            cue.mod/pkg/cueniform.com/x/terraform-core
 
-1. Choose a Terraform version and schema flavour
-   - Versions:
-     - `1.4.x`: for Terraform versions 1.4.0 and above
-       (1.5.0 at your own risk!)
-   - Flavours:
-     - `full`: includes (at least minimal) support for language structures,
-       at the cost of CUE performance
+1. Choose a Terraform version
+   - `1.4.x`: for Terraform versions 1.4.0 and above
+     (1.5.0 at your own risk!)
 
 1. From a working directory inside your CUE module directory, run `cue`:
 
        cue vet -c -d '#Configuration' \
-           cueniform.com/x/terraform-core/<VERSION>:<FLAVOUR>
+           cueniform.com/x/terraform-core/<VERSION>/core \
            /path/to/*.tf.json
 
 Missing fields and malformed structs will be pointed out by CUE.

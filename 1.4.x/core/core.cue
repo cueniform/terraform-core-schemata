@@ -1,4 +1,4 @@
-package full
+package core
 
 // https://developer.hashicorp.com/terraform/language/v1.4.x/syntax/json
 
