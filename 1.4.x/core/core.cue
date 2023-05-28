@@ -20,6 +20,17 @@ package core
 
 // https://developer.hashicorp.com/terraform/language/v1.4.x/settings
 #Terraform: {
+	// https://developer.hashicorp.com/terraform/language/v1.4.x/settings#specifying-a-required-terraform-version
+	required_version?: string
+	// https://developer.hashicorp.com/terraform/language/v1.4.x/providers/requirements#requiring-providers
+	required_providers?: [string]: {
+		source?:  string
+		version?: string
+	}
+	// https://developer.hashicorp.com/terraform/language/v1.4.x/settings/backends/configuration
+	#backends: "local" | "remote" | "consul" | "http" | "kubernetes" | "pg" | "azurerm" | "cos" | "gcs" | "oss" | "s3"
+
+	backend?: [#backends]: {...} // FIXME: more detail
 	// https://developer.hashicorp.com/terraform/cli/v1.4.x/cloud/settings
 	cloud?: {
 		organization!: string
@@ -27,13 +38,6 @@ package core
 		token?:        string
 		workspaces?:   {tags!: [...string]} | {name!: string}
 	}
-	// https://developer.hashicorp.com/terraform/language/v1.4.x/providers/requirements#requiring-providers
-	required_providers?: [string]: {
-		source?:  string
-		version?: string
-	}
-	// https://developer.hashicorp.com/terraform/language/v1.4.x/settings#specifying-a-required-terraform-version
-	required_version?: string
 }
 
 // https://developer.hashicorp.com/terraform/language/v1.4.x/providers/configuration
