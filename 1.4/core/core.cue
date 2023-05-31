@@ -1,5 +1,11 @@
 package core
 
+import (
+	"struct"
+	"regexp"
+	"cueniform.com/x/terraform-core/1.4/providers/builtin"
+)
+
 // https://developer.hashicorp.com/terraform/language/v1.4.x/syntax/json
 
 // https://developer.hashicorp.com/terraform/language/v1.4.x/syntax/configuration
@@ -7,8 +13,14 @@ package core
 	terraform?: #Terraform
 	provider?: [string]: #Provider
 	variable?: [string]: #Variable
-	resource?: [string]: [string]: #Resource
-	data?: [string]: [string]:     #DataSource
+	resource?: {
+		struct.MinFields(1)
+		[string]: [string]: #Resource
+	}
+	data?: {
+		struct.MinFields(1)
+		[string]: [string]: #DataSource
+	}
 	locals?: #Locals
 	module?: [string]: #Module & {
 		source!: _
@@ -133,4 +145,25 @@ package core
 	sensitive?:    bool
 	depends_on?:   #MetaArguments.depends_on
 	precondition?: #MetaArguments.precondition
+}
+
+#Entities: {
+	builtin.Entities
+}
+
+// https://developer.hashicorp.com/terraform/language/v1.4.x/syntax/configuration#identifiers
+#Renamer: {
+	#In:  string
+	#Out: string
+
+	// "Identifiers can contain letters, digits, underscores (_), and hyphens // (-)"
+	let a = regexp.ReplaceAllLiteral("[^a-zA-Z0-9_-]", #In, "_")
+
+	// "The first character of an identifier must not be a digit"
+	let b = regexp.ReplaceAll("^([0-9])", a, "_$1")
+
+	// `terraform validate`: "A name must start with a letter or underscore"
+	let c = regexp.ReplaceAll("^([^a-zA-Z_])", b, "_$1")
+
+	#Out: c
 }
