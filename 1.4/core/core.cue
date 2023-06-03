@@ -45,7 +45,7 @@ import (
 	backend?: [#backends]: {...} // FIXME: more detail
 	// https://developer.hashicorp.com/terraform/cli/v1.4.x/cloud/settings
 	cloud?: {
-		organization!: string
+		organization?: string // whilst critical, this field /can/ be provided via envvar
 		hostname?:     string
 		token?:        string
 		workspaces?:   {tags!: [...string]} | {name!: string}
