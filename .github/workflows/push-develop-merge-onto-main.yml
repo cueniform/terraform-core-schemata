@@ -1,0 +1,44 @@
+name: push/develop/ff-merge-onto-main
+
+"on":
+  push:
+    branches: [ "develop" ]
+
+concurrency: "main"
+
+jobs:
+  test_and_merge:
+    name: "Merge 'develop' onto 'main'"
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: "write"
+    steps:
+      - name: "Check out code"
+        uses: "actions/checkout@v3"
+
+      - name: "Install CUE"
+        uses: "cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb"
+        with:
+          version: "v0.6.0-alpha.1"
+
+      - name: "Install Terraform"
+        uses: "hashicorp/setup-terraform@v2"
+        with:
+          terraform_version: "1.4.x"
+          terraform_wrapper: false
+
+      - name: "Run tests"
+        run: "make test"
+
+      - name: "Check out code"
+        uses: "actions/checkout@v3"
+        with:
+          ref: "main"
+          fetch-depth: 0
+
+      - name: "Check if 'develop' can be merged onto 'main' via fast-forward"
+        run: "git merge-base --is-ancestor main origin/develop"
+      - name: "Fast-forward merge 'develop' onto 'main'"
+        run: |
+          git merge origin/develop --ff-only
+          git push
