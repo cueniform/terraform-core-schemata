@@ -53,10 +53,15 @@ import (
 }
 
 // https://developer.hashicorp.com/terraform/language/v1.4.x/providers/configuration
-#Provider: {
-	alias?: string
-	...
-}
+#Provider: [...{
+		alias?: string
+		...
+  }
+	] | {
+		alias?: string
+		...
+	}
+
 
 // https://developer.hashicorp.com/terraform/language/v1.4.x/values/variables
 #Variable: {
